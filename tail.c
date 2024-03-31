@@ -20,6 +20,10 @@ bool cbuf_empty(CircularBuffer *cbuf);
 bool cbuf_full(CircularBuffer *cbuf);
 CircularBuffer *cbuf_create(int size);
 void cbuf_free(CircularBuffer *cbuf);
+char *duplicate_string(char *line);
+void cbuf_put(CircularBuffer *cbuf, char *line);
+char *cbuf_get(CircularBuffer *cbuf, int index);
+void cbuf_print(CircularBuffer *cbuf);
 
 bool cbuf_empty(CircularBuffer *cbuf)
 {
@@ -105,6 +109,7 @@ void cbuf_print(CircularBuffer *cbuf)
     {
         printf("%s", cbuf_get(cbuf, i));
     }
+    printf("\n");
 }
 
 int main(int argc, char **argv)
@@ -153,6 +158,7 @@ int main(int argc, char **argv)
     }
 
     CircularBuffer *cbuf = cbuf_create(num_of_lines);
+
     if (cbuf == NULL)
     {
         fprintf(stderr, "Couldn't create circular buffer\n");
