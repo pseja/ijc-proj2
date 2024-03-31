@@ -23,12 +23,12 @@ void cbuf_free(CircularBuffer *cbuf);
 
 bool cbuf_empty(CircularBuffer *cbuf)
 {
-    return cbuf->head == cbuf->tail;
+    return cbuf->count == 0;
 }
 
 bool cbuf_full(CircularBuffer *cbuf)
 {
-    return (cbuf->head - cbuf->tail + cbuf->size) % cbuf->size == 1;
+    return cbuf->count == cbuf->size;
 }
 
 CircularBuffer *cbuf_create(int size)
@@ -65,6 +65,48 @@ void cbuf_free(CircularBuffer *cbuf)
     free(cbuf);
 }
 
+char *duplicate_string(char *line)
+{
+    char *str = malloc(strlen(line) + 1);
+    if (str == NULL)
+    {
+        fprintf(stderr, "Failed to allocate memory\n");
+        return NULL;
+    }
+    strcpy(str, line);
+    return str;
+}
+
+void cbuf_put(CircularBuffer *cbuf, char *line)
+{
+    if (cbuf_full(cbuf))
+    {
+        free(cbuf->lines[cbuf->head]);
+        cbuf->head = (cbuf->head + 1) % cbuf->size;
+        cbuf->count--;
+    }
+    cbuf->lines[cbuf->tail] = duplicate_string(line);
+    cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+    cbuf->count++;
+}
+
+char *cbuf_get(CircularBuffer *cbuf, int index)
+{
+    if (index < 0 || index >= cbuf->count)
+    {
+        return NULL;
+    }
+    return cbuf->lines[(cbuf->head + index) % cbuf->size];
+}
+
+void cbuf_print(CircularBuffer *cbuf)
+{
+    for (int i = 0; i < cbuf->count; i++)
+    {
+        printf("%s", cbuf_get(cbuf, i));
+    }
+}
+
 int main(int argc, char **argv)
 {
     FILE *file = NULL;
@@ -97,9 +139,6 @@ int main(int argc, char **argv)
                 fprintf(stderr, "Couldn't open file %s\n", argv[i]);
                 return 1;
             }
-            #ifdef DEBUG
-            printf("file: %s\n", argv[i]);
-            #endif
         }
         else
         {
@@ -111,14 +150,7 @@ int main(int argc, char **argv)
     if (file == NULL)
     {
         file = stdin;
-        #ifdef DEBUG
-        printf("file: stdin\n");
-        #endif
     }
-
-    #ifdef DEBUG
-    printf("num_of_lines: %d\n", num_of_lines);
-    #endif
 
     CircularBuffer *cbuf = cbuf_create(num_of_lines);
     if (cbuf == NULL)
@@ -142,10 +174,10 @@ int main(int argc, char **argv)
             line[MAX_LINE_LENGTH] = '\n';
             line[MAX_LINE_LENGTH + 1] = '\0';
         }
-        // cbuf_put
+        cbuf_put(cbuf, line);
     }
 
-    // print lines
+    cbuf_print(cbuf);
 
     cbuf_free(cbuf);
 
