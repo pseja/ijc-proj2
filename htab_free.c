@@ -4,7 +4,7 @@
 
 void htab_free(htab_t *t)
 {
-    // TODO htab_clear
+    htab_clear(t);
     free(t->ptr_array);
     free(t);
 }
