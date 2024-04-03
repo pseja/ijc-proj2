@@ -13,6 +13,8 @@ int main()
         return 1;
     }
 
+    printf("🔥this is fine🔥\n");
+
     // read words from stdin
 
     // htab_free
