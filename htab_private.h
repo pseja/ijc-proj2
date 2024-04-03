@@ -2,7 +2,7 @@
 
 struct htab_item
 {
-    htab_pair_t pair;       // (key, data) pair
+    htab_pair_t *pair;      // (key, data) pair
     struct htab_item *next; // pointer to the next htab_item in the array
 };
 
