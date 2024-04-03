@@ -12,7 +12,7 @@ htab_t *htab_init(const size_t n)
 
     hash_table->size = 0;
     hash_table->arr_size = n;
-    hash_table->ptr_array = calloc(hash_table->arr_size * sizeof(struct htab_item *));
+    hash_table->ptr_array = calloc(hash_table->arr_size, sizeof(struct htab_item *));
     if (hash_table->ptr_array == NULL)
     {
         free(hash_table);
