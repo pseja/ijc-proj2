@@ -73,7 +73,7 @@ char *duplicate_string(char *line)
     char *str = malloc(strlen(line) + 1);
     if (str == NULL)
     {
-        fprintf(stderr, "Failed to allocate memory\n");
+        fprintf(stderr, "Failed to allocate memory for duplicate string\n");
         return NULL;
     }
     strcpy(str, line);
