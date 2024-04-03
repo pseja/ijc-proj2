@@ -4,20 +4,20 @@
 
 htab_t *htab_init(const size_t n)
 {
-    htab_t *table = malloc(sizeof(htab_t));
-    if (table == NULL)
+    htab_t *hash_table = malloc(sizeof(htab_t));
+    if (hash_table == NULL)
     {
         return NULL;
     }
 
-    table->size = 0;
-    table->arr_size = n;
-    table->ptr_array = malloc(table->arr_size * sizeof(struct htab_item *));
-    if (table->ptr_array == NULL)
+    hash_table->size = 0;
+    hash_table->arr_size = n;
+    hash_table->ptr_array = malloc(hash_table->arr_size * sizeof(struct htab_item *));
+    if (hash_table->ptr_array == NULL)
     {
-        free(table);
+        free(hash_table);
         return NULL;
     }
 
-    return table;
+    return hash_table;
 }
