@@ -17,18 +17,14 @@ char *duplicate_string(const char *key)
 
 htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
 {
-    size_t input_index = htab_hash_function(key) % t->arr_size;
-    struct htab_item *current_item = t->ptr_array[input_index];
-
-    // look for matching key in the hash table buckets linked list
-    while (current_item != NULL)
+    // use htab_find function to check if the key already exists
+    htab_pair_t *existing_pair = htab_find(t, key);
+    if (existing_pair != NULL)
     {
-        if (strcmp(current_item->pair->key, key) == 0)
-        {
-            return current_item->pair;
-        }
-        current_item = current_item->next;
+        return existing_pair;
     }
+
+    size_t input_index = htab_hash_function(key) % t->arr_size;
 
     // create a new item and initialize new item
     struct htab_item *new_item = malloc(sizeof(struct htab_item));
