@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "htab.h"
 #include "htab_private.h"
 
