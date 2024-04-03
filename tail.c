@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-//#define DEBUG
 #define MAX_LINE_LENGTH 2047
 
 typedef struct
