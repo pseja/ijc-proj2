@@ -14,6 +14,8 @@ int main()
     }
 
     printf("🔥this is fine🔥\n");
+    printf("htab_size: %zu\n", htab_size(hash_table));
+    printf("htab_bucket_count: %zu\n", htab_bucket_count(hash_table));
 
     // read words from stdin
 
