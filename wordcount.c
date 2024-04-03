@@ -17,7 +17,7 @@ int main()
 
     // read words from stdin
 
-    // htab_free
+    htab_free(hash_table);
 
     return 0;
 }
