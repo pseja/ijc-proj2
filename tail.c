@@ -51,7 +51,7 @@ int handle_arguments(Arguments *args, int argc, char **argv)
                 return ERR_ARGS;
             }
 
-            if (strspn(argv[++i], "-0123456789") != strlen(argv[i]))
+            if (strspn(argv[++i], "0123456789") != strlen(argv[i]))
             {
                 fprintf(stderr, "-n [NUMBER] - NUMBER is not a valid number\n");
                 return ERR_ARGS;
@@ -62,10 +62,6 @@ int handle_arguments(Arguments *args, int argc, char **argv)
             if (args->num_of_lines == 0)
             {
                 return ERR_INTENDED_EXIT;
-            }
-            else if (args->num_of_lines < 0)
-            {
-                args->num_of_lines *= -1;
             }
         }
         else if (args->file == NULL)
