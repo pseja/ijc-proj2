@@ -6,3 +6,7 @@
 !*/
 # Ignore vscode dir
 .vscode/
+
+tail-test.sh
+
+tail_tests2024/
