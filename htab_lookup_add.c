@@ -21,6 +21,7 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
     htab_pair_t *existing_pair = htab_find(t, key);
     if (existing_pair != NULL)
     {
+        existing_pair->value++;
         return existing_pair;
     }
 
