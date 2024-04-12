@@ -11,7 +11,7 @@
 
 void print_htab_pair(htab_pair_t *pair)
 {
-    printf("%s: %d\n", pair->key, pair->value);
+    printf("    > %s: %d\n", pair->key, pair->value);
 }
 
 int main()
@@ -69,6 +69,9 @@ int main()
 
     printf("\n✏️ Printing hash table...\n");
     htab_for_each(hash_table, print_htab_pair);
+
+    printf("\n✏️ Printing statistics...\n");
+    htab_statistics(hash_table);
 #endif
 
     // read words from stdin
