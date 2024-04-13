@@ -46,7 +46,7 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
     }
 
     // insert data into the pair
-    new_item->pair->value = 0;
+    new_item->pair->value = 1;
     new_item->pair->key = duplicate_string(key);
     if (new_item->pair->key == NULL)
     {
