@@ -10,3 +10,5 @@
 tail-test.sh
 
 tail_tests2024/
+
+*.o
