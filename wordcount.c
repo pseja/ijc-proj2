@@ -4,7 +4,12 @@
 #include "io.h"
 
 #define MAX_WORD_LENGTH 255
-#define HASH_TABLE_SIZE 69 // temporary value
+// proč zrovna hodnota 1'300'021:
+// našel jsem na internetu (https://cseweb.ucsd.edu/~kube/cls/100/Lectures/lec16/lec16-8.html),
+// že ideální velikost je počet klíčů * 1.3 a velikost by měla být nejbližší vyšší prvočíslo k výsledku násobení,
+// program jsem testoval na příkazu ze zadání "seq 1000000 2000000|shuf",
+// kde se nachází milion čísel * 1.3 a nejbližší prvočíslo je 1'300'021
+#define HASH_TABLE_SIZE 1299989
 
 // error codes
 #define ERR_HASH_TABLE_INIT 1
@@ -34,7 +39,7 @@ int load_hash_table(htab_t *hash_table, FILE *file, int max_word_length)
 
 void print_htab_pair(htab_pair_t *pair)
 {
-    printf("%s: %d\n", pair->key, pair->value);
+    printf("%s\t%d\n", pair->key, pair->value);
 }
 
 int main()
