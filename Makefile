@@ -5,7 +5,7 @@ CFLAGS=-std=c11 # -Wall -Wextra -Werror
 CXXFLAGS=-std=c++17 -Wall -Wextra -Werror
 LDFLAGS=-fPIC
 
-.PHONY: all clean
+.PHONY: all run clean zip
 
 all: tail wordcount-cc wordcount wordcountStatistics wordcountDynamic
 
@@ -68,3 +68,6 @@ run: tail wordcount-cc wordcount wordcountStatistics wordcountDynamic
 
 clean:
 	rm tail wordcount wordcount-cc wordcountStatistics wordcountDynamic *.o libhtab.a libhtab.so
+
+zip:
+	zip xpsejal00.zip *.c *.cc *.h Makefile
