@@ -10,6 +10,10 @@
 #define ERR_HASH_TABLE_INIT 1
 #define ERR_HASH_TABLE_ADD 2
 
+// function prototypes
+int load_hash_table(htab_t *hash_table, FILE *file, int max_word_length);
+void print_htab_pair(htab_pair_t *pair);
+
 int load_hash_table(htab_t *hash_table, FILE *file, int max_word_length)
 {
     char word[MAX_WORD_LENGTH + 1];
@@ -49,6 +53,10 @@ int main()
     }
 
     htab_for_each(hash_table, print_htab_pair);
+
+#ifdef STATISTICS
+    htab_statistics(hash_table);
+#endif // STATISTICS
 
     htab_free(hash_table);
 
