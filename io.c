@@ -1,11 +1,13 @@
 #include "io.h"
+#include <stdbool.h>
 
 int read_word(char *s, int max, FILE *f)
 {
-    int ch = 0;
+    int ch = -1;
     int i = 0;
+    static bool printed_warning = false; // program při prvním delším slovu vytiskne varování na stderr (max 1 varování)
 
-    while ((ch = fgetc(f)) != EOF && i < max - 1)
+    while ((ch = fgetc(f)) != EOF)
     {
         if (isspace(ch) && i == 0)
         {
@@ -22,7 +24,11 @@ int read_word(char *s, int max, FILE *f)
         }
         else
         {
-            fprintf(stderr, "Warning: The word you are trying to read is too long. Max: %d\n", max);
+            if (!printed_warning)
+            {
+                fprintf(stderr, "Warning: The word you are trying to read is too long. Max: %d\n", max);
+                printed_warning = true;
+            }
 
             // read word until a space is reached or EOF
             while ((ch = fgetc(f)) != EOF && !isspace(ch))
