@@ -20,13 +20,13 @@ typedef struct
 typedef struct
 {
     int size;
-    int count;
     int head;
     int tail;
     char **lines;
 } CircularBuffer;
 
 // function prototypes
+int handle_arguments(Arguments *args, int argc, char **argv);
 bool cbuf_empty(CircularBuffer *cbuf);
 bool cbuf_full(CircularBuffer *cbuf);
 CircularBuffer *cbuf_create(int size);
@@ -39,7 +39,7 @@ void cbuf_print(CircularBuffer *cbuf);
 int handle_arguments(Arguments *args, int argc, char **argv)
 {
     args->file = NULL;
-    args->num_of_lines = 10;
+    args->num_of_lines = 11; // one extra element for checking if queue is full
 
     for (int i = 1; i < argc; i++)
     {
@@ -63,6 +63,8 @@ int handle_arguments(Arguments *args, int argc, char **argv)
             {
                 return ERR_INTENDED_EXIT;
             }
+
+            args->num_of_lines++; // increment value by one to make room for checking if queue is full
         }
         else if (args->file == NULL)
         {
@@ -102,12 +104,12 @@ int handle_arguments(Arguments *args, int argc, char **argv)
 
 bool cbuf_empty(CircularBuffer *cbuf)
 {
-    return cbuf->count == 0;
+    return cbuf->head == cbuf->tail;
 }
 
 bool cbuf_full(CircularBuffer *cbuf)
 {
-    return cbuf->count == cbuf->size;
+    return (cbuf->tail + 1) % cbuf->size == cbuf->head;
 }
 
 CircularBuffer *cbuf_create(int size)
@@ -120,7 +122,6 @@ CircularBuffer *cbuf_create(int size)
     }
 
     cbuf->size = size;
-    cbuf->count = 0;
     cbuf->head = 0;
     cbuf->tail = 0;
     cbuf->lines = (char **)malloc(size * sizeof(char *));
@@ -136,7 +137,9 @@ CircularBuffer *cbuf_create(int size)
 
 void cbuf_free(CircularBuffer *cbuf)
 {
-    for (int i = 0; i < cbuf->count; i++)
+    int count = (cbuf->tail - cbuf->head + cbuf->size) % cbuf->size;
+
+    for (int i = 0; i < count; i++)
     {
         free(cbuf->lines[(cbuf->head + i) % cbuf->size]);
     }
@@ -153,6 +156,7 @@ char *duplicate_string(char *line)
         return NULL;
     }
     strcpy(str, line);
+
     return str;
 }
 
@@ -162,25 +166,28 @@ void cbuf_put(CircularBuffer *cbuf, char *line)
     {
         free(cbuf->lines[cbuf->head]);
         cbuf->head = (cbuf->head + 1) % cbuf->size;
-        cbuf->count--;
     }
     cbuf->lines[cbuf->tail] = duplicate_string(line);
     cbuf->tail = (cbuf->tail + 1) % cbuf->size;
-    cbuf->count++;
 }
 
 char *cbuf_get(CircularBuffer *cbuf, int index)
 {
-    if (index < 0 || index >= cbuf->count)
+    int count = (cbuf->tail - cbuf->head + cbuf->size) % cbuf->size;
+
+    if (index < 0 || index >= count)
     {
         return NULL;
     }
+
     return cbuf->lines[(cbuf->head + index) % cbuf->size];
 }
 
 void cbuf_print(CircularBuffer *cbuf)
 {
-    for (int i = 0; i < cbuf->count; i++)
+    int count = (cbuf->tail - cbuf->head + cbuf->size) % cbuf->size;
+
+    for (int i = 0; i < count; i++)
     {
         printf("%s", cbuf_get(cbuf, i));
     }
