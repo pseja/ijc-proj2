@@ -1,3 +1,8 @@
+// Lukáš Pšeja (xpsejal00)
+// Fakulta informačních technologií Vysokého učení technického v Brně
+// Příklad: 2
+// 23.4.2024
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "htab.h"
@@ -9,7 +14,7 @@
 // že ideální velikost je počet klíčů * 1.3 a velikost by měla být nejbližší vyšší prvočíslo k výsledku násobení,
 // program jsem testoval na příkazu ze zadání "seq 1000000 2000000|shuf",
 // kde se nachází milion čísel * 1.3 a nejbližší prvočíslo je 1'300'021
-#define HASH_TABLE_SIZE 1299989
+#define HASH_TABLE_SIZE 1300021
 
 // error codes
 #define ERR_HASH_TABLE_INIT 1
@@ -21,9 +26,9 @@ void print_htab_pair(htab_pair_t *pair);
 
 int load_hash_table(htab_t *hash_table, FILE *file, int max_word_length)
 {
-    char word[MAX_WORD_LENGTH + 1];
+    char word[max_word_length + 1];
 
-    while (read_word(word, MAX_WORD_LENGTH, stdin) != EOF)
+    while (read_word(word, max_word_length, file) != EOF)
     {
         htab_pair_t *pair = htab_lookup_add(hash_table, word);
         if (pair == NULL)

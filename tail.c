@@ -1,3 +1,10 @@
+// Lukáš Pšeja (xpsejal00)
+// Fakulta informačních technologií Vysokého učení technického v Brně
+// Příklad: 1
+// 23.4.2024
+
+#define _POSIX_C_SOURCE 200809L
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +38,6 @@ bool cbuf_empty(CircularBuffer *cbuf);
 bool cbuf_full(CircularBuffer *cbuf);
 CircularBuffer *cbuf_create(int size);
 void cbuf_free(CircularBuffer *cbuf);
-char *duplicate_string(char *line);
 void cbuf_put(CircularBuffer *cbuf, char *line);
 char *cbuf_get(CircularBuffer *cbuf, int index);
 void cbuf_print(CircularBuffer *cbuf);
@@ -51,7 +57,9 @@ int handle_arguments(Arguments *args, int argc, char **argv)
                 return ERR_ARGS;
             }
 
-            if (strspn(argv[++i], "0123456789") != strlen(argv[i]))
+            i++;
+
+            if (strspn(argv[i], "0123456789") != strlen(argv[i]))
             {
                 fprintf(stderr, "-n [NUMBER] - NUMBER is not a valid number\n");
                 return ERR_ARGS;
@@ -147,19 +155,6 @@ void cbuf_free(CircularBuffer *cbuf)
     free(cbuf);
 }
 
-char *duplicate_string(char *line)
-{
-    char *str = malloc(strlen(line) + 1);
-    if (str == NULL)
-    {
-        fprintf(stderr, "Failed to allocate memory for duplicate string\n");
-        return NULL;
-    }
-    strcpy(str, line);
-
-    return str;
-}
-
 void cbuf_put(CircularBuffer *cbuf, char *line)
 {
     if (cbuf_full(cbuf))
@@ -167,7 +162,7 @@ void cbuf_put(CircularBuffer *cbuf, char *line)
         free(cbuf->lines[cbuf->head]);
         cbuf->head = (cbuf->head + 1) % cbuf->size;
     }
-    cbuf->lines[cbuf->tail] = duplicate_string(line);
+    cbuf->lines[cbuf->tail] = strdup(line);
     cbuf->tail = (cbuf->tail + 1) % cbuf->size;
 }
 

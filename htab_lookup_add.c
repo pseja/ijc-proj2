@@ -1,19 +1,14 @@
+// Lukáš Pšeja (xpsejal00)
+// Fakulta informačních technologií Vysokého učení technického v Brně
+// Příklad: 2
+// 23.4.2024
+
+#define _POSIX_C_SOURCE 200809L
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "htab.h"
 #include "htab_private.h"
-
-char *duplicate_string(const char *key)
-{
-    char *str = malloc(strlen(key) + 1);
-    if (str == NULL)
-    {
-        fprintf(stderr, "Failed to allocate memory for duplicate string\n");
-        return NULL;
-    }
-    strcpy(str, key);
-    return str;
-}
 
 htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
 {
@@ -47,7 +42,7 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
 
     // insert data into the pair
     new_item->pair->value = 1;
-    new_item->pair->key = duplicate_string(key);
+    new_item->pair->key = strdup(key);
     if (new_item->pair->key == NULL)
     {
         free(new_item->pair);

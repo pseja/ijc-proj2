@@ -1,8 +1,13 @@
+# Lukáš Pšeja (xpsejal00)
+# Fakulta informačních technologií Vysokého učení technického v Brně
+# Makefile
+# 23.4.2024
+
 CC=gcc
 CXX=g++
 
-CFLAGS=-std=c11 # -Wall -Wextra -Werror
-CXXFLAGS=-std=c++17 -Wall -Wextra -Werror
+CFLAGS=-std=c11 -Wall -Wextra -Werror -O2
+CXXFLAGS=-std=c++17 -Wall -Wextra -Werror -O2
 LDFLAGS=-fPIC
 
 .PHONY: all run clean zip
@@ -60,7 +65,6 @@ libhtab.so: $(HTAB_DYNAMIC_FILES)
 run: tail wordcount-cc wordcount wordcountStatistics wordcountDynamic
 	seq 1000000 2000000 | shuf > temp.txt
 	./tail < temp.txt
-	./wordcount-cc < temp.txt
 	./wordcount < temp.txt
 	./wordcountStatistics < temp.txt
 	LD_LIBRARY_PATH="." ./wordcountDynamic < temp.txt

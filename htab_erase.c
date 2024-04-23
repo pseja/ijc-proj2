@@ -1,3 +1,8 @@
+// Lukáš Pšeja (xpsejal00)
+// Fakulta informačních technologií Vysokého učení technického v Brně
+// Příklad: 2
+// 23.4.2024
+
 #include <stdlib.h>
 #include "htab.h"
 #include "htab_private.h"
